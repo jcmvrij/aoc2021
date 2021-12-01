@@ -19,13 +19,12 @@ public class Main {
         // part 2
         int slidingWindowSize = 3;
         int amountOfSlidingWindows = depthMeasurements.length - (slidingWindowSize - 1);
-        int slidingWindowCounter = 0;
         int slidingWindowIncreasedDepthCounter = 0;
         int currentSum = 0;
         int nextSum = 0;
 
         for (int j = 0; j < slidingWindowSize; j++) {
-            currentSum += depthMeasurements[slidingWindowCounter + j];
+            currentSum += depthMeasurements[j];
         }
 
         for (int i = 1; i < amountOfSlidingWindows; i++) {
