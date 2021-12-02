@@ -9,7 +9,7 @@ public class AdvancedCommandModule extends CommandModule implements Instructable
         int horizontalPosition = submarine.getHorizontalPosition();
         int depth = submarine.getDepth();
         int aim = submarine.getAim();
-        parseInstruction(instruction);
+        super.parseInstruction(instruction);
         switch (super.command) {
             case "forward" -> {
                 submarine.setHorizontalPosition(horizontalPosition + super.movement);
