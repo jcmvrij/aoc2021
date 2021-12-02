@@ -9,10 +9,10 @@ public class BasicCommandModule extends CommandModule implements Instructable{
         int horizontalPosition = submarine.getHorizontalPosition();
         int depth = submarine.getDepth();
         super.parseInstruction(instruction);
-        switch (command) {
-            case "forward" -> submarine.setHorizontalPosition(horizontalPosition + movement);
-            case "up" -> submarine.setDepth(depth - movement);
-            case "down" -> submarine.setDepth(depth + movement);
+        switch (super.command) {
+            case "forward" -> submarine.setHorizontalPosition(horizontalPosition + super.movement);
+            case "up" -> submarine.setDepth(depth - super.movement);
+            case "down" -> submarine.setDepth(depth + super.movement);
         }
     }
 }

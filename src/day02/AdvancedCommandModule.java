@@ -4,25 +4,19 @@ public class AdvancedCommandModule extends CommandModule implements Instructable
     public AdvancedCommandModule() {
     }
 
-    public void parseInstruction(String instruction) {
-        String[] splitInstruction = instruction.split("\\s+");
-        command = splitInstruction[0];
-        movement = Integer.parseInt(splitInstruction[1]);
-    }
-
     @Override
     public void executeMovement(Submarine submarine, String instruction) {
         int horizontalPosition = submarine.getHorizontalPosition();
         int depth = submarine.getDepth();
         int aim = submarine.getAim();
         parseInstruction(instruction);
-        switch (command) {
+        switch (super.command) {
             case "forward" -> {
-                submarine.setHorizontalPosition(horizontalPosition + movement);
-                submarine.setDepth(depth + (movement * aim));
+                submarine.setHorizontalPosition(horizontalPosition + super.movement);
+                submarine.setDepth(depth + (super.movement * aim));
             }
-            case "up" -> submarine.setAim(aim - movement);
-            case "down" -> submarine.setAim(aim + movement);
+            case "up" -> submarine.setAim(aim - super.movement);
+            case "down" -> submarine.setAim(aim + super.movement);
         }
     }
 }
