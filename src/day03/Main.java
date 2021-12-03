@@ -37,57 +37,8 @@ public class Main {
         System.out.println("Answer to part 1: " + (gamma * epsilon));
 
         //part2
-        String oxygenGeneratorRating;
-        char oxygenBitCriteria;
-        int oxygenRatingIndex = 0;
-
-        for (int i = 0; i < input.get(0).length(); i++) {
-            int sum = 0;
-            for (String s : input) {
-                char binaryChar = s.charAt(i);
-                sum += Character.getNumericValue(binaryChar);
-            }
-            if (sum >= (0.5 * input.size())) {
-                oxygenBitCriteria = '1';
-            } else {
-                oxygenBitCriteria = '0';
-            }
-
-            input = narrowDownDiagnosticsAtIndexByBitCriteria(input, oxygenRatingIndex, oxygenBitCriteria);
-            oxygenRatingIndex++;
-            if (input.size() == 1) {
-                break;
-            }
-        }
-        oxygenGeneratorRating = input.get(0);
-
-
-//        input = ReadFile.read(pathToTestInput);
-        input = ReadFile.read(pathToInput);
-
-        String co2ScrubberRating;
-        char co2BitCriteria;
-        int co2RatingIndex = 0;
-
-        for (int i = 0; i < input.get(0).length(); i++) {
-            int sum = 0;
-            for (String s : input) {
-                char binaryChar = s.charAt(i);
-                sum += Character.getNumericValue(binaryChar);
-            }
-            if (sum >= (0.5 * input.size())) {
-                co2BitCriteria = '0';
-            } else {
-                co2BitCriteria = '1';
-            }
-
-            input = narrowDownDiagnosticsAtIndexByBitCriteria(input, co2RatingIndex, co2BitCriteria);
-            co2RatingIndex++;
-            if (input.size() == 1) {
-                break;
-            }
-        }
-        co2ScrubberRating = input.get(0);
+        String oxygenGeneratorRating = getRating(input, true);
+        String co2ScrubberRating = getRating(input, false);
 
         System.out.println(oxygenGeneratorRating);
         System.out.println(co2ScrubberRating);
@@ -96,7 +47,7 @@ public class Main {
         System.out.println("Answer to part 2: " + (oxygen * co2));
     }
 
-    public static ArrayList<String> narrowDownDiagnosticsAtIndexByBitCriteria(ArrayList<String> diagnostics, int index, char bitCriteria) {
+    public static ArrayList<String> narrowDownAtIndexByBitCriteria(ArrayList<String> diagnostics, int index, char bitCriteria) {
         ArrayList<String> narrowedDownDiagnostics = new ArrayList<>();
         for (String s : diagnostics) {
             if (s.charAt(index) == bitCriteria) {
@@ -104,5 +55,38 @@ public class Main {
             }
         }
         return narrowedDownDiagnostics;
+    }
+
+    public static String getRating(ArrayList<String> diagnostics, boolean isByMostCommon) {
+        char bitCriteria;
+        int ratingIndex = 0;
+
+        for (int i = 0; i < diagnostics.get(0).length(); i++) {
+            int sum = 0;
+            for (String s : diagnostics) {
+                char binaryChar = s.charAt(i);
+                sum += Character.getNumericValue(binaryChar);
+            }
+            if (sum >= (0.5 * diagnostics.size())) {
+                if (isByMostCommon) {
+                    bitCriteria = '1';
+                } else {
+                    bitCriteria = '0';
+                }
+            } else {
+                if (isByMostCommon) {
+                    bitCriteria = '0';
+                } else {
+                    bitCriteria = '1';
+                }
+            }
+
+            diagnostics = narrowDownAtIndexByBitCriteria(diagnostics, ratingIndex, bitCriteria);
+            ratingIndex++;
+            if (diagnostics.size() == 1) {
+                break;
+            }
+        }
+        return diagnostics.get(0);
     }
 }
