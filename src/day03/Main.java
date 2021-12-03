@@ -23,19 +23,13 @@ public class Main {
             }
             if (sum < (0.5 * input.size())) {
                 binaryGamma += "0";
+                binaryEpsilon += "1";
             } else {
                 binaryGamma += "1";
+                binaryEpsilon += "0";
             }
         }
 
-        for (int i = 0; i < binaryGamma.length(); i++) {
-            if (binaryGamma.charAt(i) == '1') {
-                binaryEpsilon += "0";
-            } else {
-                binaryEpsilon += "1";
-            }
-        }
-        System.out.println(binaryGamma + " " + binaryEpsilon);
         int gamma = Integer.valueOf(binaryGamma, 2);
         int epsilon = Integer.valueOf(binaryEpsilon, 2);
         System.out.println(gamma * epsilon);
