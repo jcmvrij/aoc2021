@@ -8,8 +8,8 @@ public class Main {
     public static void main(String[] args) {
         String pathToTestInput = ".\\src\\day03\\testinput.txt";
         String pathToInput = ".\\src\\day03\\input.txt";
-//        ArrayList<String> input = ReadFile.read(pathToTestInput);
-        ArrayList<String> input = ReadFile.read(pathToInput);
+        ArrayList<String> input = ReadFile.read(pathToTestInput);
+//        ArrayList<String> input = ReadFile.read(pathToInput);
 
         //part1
         String binaryGamma = "";
@@ -17,8 +17,8 @@ public class Main {
 
         for (int i = 0; i < input.get(0).length(); i++) {
             int sum = 0;
-            for (int j = 0; j < input.size(); j++) {
-                char binaryChar = input.get(j).charAt(i);
+            for (String s : input) {
+                char binaryChar = s.charAt(i);
                 sum += Character.getNumericValue(binaryChar);
             }
             if (sum > (0.5 * input.size())) {
@@ -29,28 +29,24 @@ public class Main {
                 binaryEpsilon += "0";
             }
         }
+        System.out.println(binaryGamma);
+        System.out.println(binaryEpsilon);
 
         int gamma = Integer.valueOf(binaryGamma, 2);
         int epsilon = Integer.valueOf(binaryEpsilon, 2);
-        System.out.println(binaryGamma);
-        System.out.println(gamma);
-        System.out.println(binaryEpsilon);
-        System.out.println(epsilon);
-        System.out.println(gamma * epsilon);
-        System.out.println("-----------------");
+        System.out.println("Answer to part 1: " + (gamma * epsilon));
 
         //part2
 
         String oxygenGeneratorRating = "";
-
         char oxygenBitCriteria;
-
+        int oxygenRatingIndex = 0;
 
 
         for (int i = 0; i < input.get(0).length(); i++) {
             int sum = 0;
-            for (int j = 0; j < input.size(); j++) {
-                char binaryChar = input.get(j).charAt(i);
+            for (String s : input) {
+                char binaryChar = s.charAt(i);
                 sum += Character.getNumericValue(binaryChar);
             }
             if (sum >= (0.5 * input.size())) {
@@ -58,33 +54,34 @@ public class Main {
             } else {
                 oxygenBitCriteria = '0';
             }
-            oxygenGeneratorRating += oxygenBitCriteria;
 
-            ArrayList<String> newInput = new ArrayList<>();
-            for (int j = 0; j < input.size(); j++) {
-                if (input.get(j).charAt(oxygenGeneratorRating.length() - 1) == oxygenBitCriteria) {
-                    newInput.add(input.get(j));
+            ArrayList<String> narrowedDownDiagnostics = new ArrayList<>();
+            for (String s : input) {
+                if (s.charAt(oxygenRatingIndex) == oxygenBitCriteria) {
+                    narrowedDownDiagnostics.add(s);
                 }
             }
-            input = newInput;
+            oxygenRatingIndex++;
+            input = narrowedDownDiagnostics;
             if (input.size() == 1) {
-                oxygenGeneratorRating = input.get(0);
                 break;
             }
-            System.out.println(input);
         }
-        System.out.println(oxygenGeneratorRating);
-        System.out.println(input);
+        oxygenGeneratorRating = input.get(0);
 
 
-        input = ReadFile.read(pathToInput);
+
+        input = ReadFile.read(pathToTestInput);
+//        input = ReadFile.read(pathToInput);
         String co2ScrubberRating = "";
         char co2BitCriteria;
+        int co2RatingIndex = 0;
+
 
         for (int i = 0; i < input.get(0).length(); i++) {
             int sum = 0;
-            for (int j = 0; j < input.size(); j++) {
-                char binaryChar = input.get(j).charAt(i);
+            for (String s : input) {
+                char binaryChar = s.charAt(i);
                 sum += Character.getNumericValue(binaryChar);
             }
             if (sum >= (0.5 * input.size())) {
@@ -92,34 +89,26 @@ public class Main {
             } else {
                 co2BitCriteria = '1';
             }
-            co2ScrubberRating += co2BitCriteria;
 
-            ArrayList<String> newInput = new ArrayList<>();
-            for (int j = 0; j < input.size(); j++) {
-                if (input.get(j).charAt(co2ScrubberRating.length() - 1) == co2BitCriteria) {
-                    newInput.add(input.get(j));
+            ArrayList<String> narrowedDownDiagnostics = new ArrayList<>();
+            for (String s : input) {
+                if (s.charAt(co2RatingIndex) == co2BitCriteria) {
+                    narrowedDownDiagnostics.add(s);
                 }
             }
-            input = newInput;
+            co2RatingIndex++;
+            input = narrowedDownDiagnostics;
             if (input.size() == 1) {
-                co2ScrubberRating = input.get(0);
                 break;
             }
-            System.out.println(input);
         }
-        System.out.println(co2ScrubberRating);
-        System.out.println(input);
+        co2ScrubberRating = input.get(0);
 
-        System.out.println("--------");
         System.out.println();
-
+        System.out.println(oxygenGeneratorRating);
+        System.out.println(co2ScrubberRating);
         int oxygen = Integer.valueOf(oxygenGeneratorRating, 2);
-        System.out.println(oxygen);
         int co2 = Integer.valueOf(co2ScrubberRating, 2);
-        System.out.println(co2);
-
-        System.out.println(oxygen * co2);
+        System.out.println("Answer to part 2: " + (oxygen * co2));
     }
-
-
 }
