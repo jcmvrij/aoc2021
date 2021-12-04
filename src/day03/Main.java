@@ -61,7 +61,8 @@ public class Main {
         char bitCriteria;
         int ratingIndex = 0;
 
-        for (int i = 0; i < diagnostics.get(0).length(); i++) {
+        int i = 0;
+        while (i < diagnostics.get(0).length() && diagnostics.size() > 1) {
             int sum = 0;
             for (String s : diagnostics) {
                 char binaryChar = s.charAt(i);
@@ -83,9 +84,7 @@ public class Main {
 
             diagnostics = narrowDownAtIndexByBitCriteria(diagnostics, ratingIndex, bitCriteria);
             ratingIndex++;
-            if (diagnostics.size() == 1) {
-                break;
-            }
+            i++;
         }
         return diagnostics.get(0);
     }
