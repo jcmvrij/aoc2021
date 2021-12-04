@@ -17,33 +17,15 @@ public class Bingo {
 
         int[] bingoNumbers = parseBingoNumbers(inputBingoNumbers);
         ArrayList<int[][]> allBingoBoards = createBoards(input, boardDimension);
-        int[][] winningBoard = new int[5][5];
-        int boardIndex = -1;
-        int lastBingoNumber = -1;
+        int[][] winningBoard;
+        int boardIndex;
+        int lastBingoNumber;
+
 
         for (int i = 0; i < bingoNumbers.length; i++) {
             for (int j = 0; j < allBingoBoards.size(); j++) {
                 markBoard(allBingoBoards.get(j), bingoNumbers[i]);
-                winningBoard = evaluateBingoRow(allBingoBoards.get(j));
-                boardIndex = j;
-                lastBingoNumber = bingoNumbers[i];
-                if (winningBoard != null) {
-                    System.out.println(boardIndex);
-                    int score = calculateBoardScore(winningBoard);
-                    System.out.println(score + " * " + lastBingoNumber + " = " + score * lastBingoNumber);
-                    break;
-                }
-            }
-            if (winningBoard != null) {
-                break;
-            }
-        }
-
-        //part2
-        for (int i = 0; i < bingoNumbers.length; i++) {
-            for (int j = 0; j < allBingoBoards.size(); j++) {
-                markBoard(allBingoBoards.get(j), bingoNumbers[i]);
-                winningBoard = evaluateBingoRow(allBingoBoards.get(j));
+                winningBoard = evaluateBingo(allBingoBoards.get(j));
                 boardIndex = j;
                 lastBingoNumber = bingoNumbers[i];
                 if (winningBoard != null) {
@@ -56,6 +38,8 @@ public class Bingo {
             }
         }
 
+        //////////!! De eerste bingo (eerste in de output) is de eerst mogelijke bingo > part 1
+        //////////!! De laatste bingo (laatste in de output) is de laatst mogelijke bingo > part 2
     }
 
 
@@ -73,7 +57,7 @@ public class Bingo {
         return score;
     }
 
-    private static int[][] evaluateBingoRow(int[][] board) {
+    private static int[][] evaluateBingo(int[][] board) {
             int[] bingo = new int[]{-1, -1, -1, -1, -1};
             int[][] columnBoard = transformToColumnBoard(board);
 
@@ -108,31 +92,31 @@ public class Bingo {
     }
 
     private static ArrayList<int[][]> createBoards(ArrayList<String> input, int boardDimension) {
-            ArrayList<int[][]> allBoards = new ArrayList<>();
-            int[][] board = new int[boardDimension][boardDimension];
-            int rowCounter = 0;
-            String[] splitRow;
-            for (int i = 0; i < input.size(); i++) {
-                if (input.get(i).equals("")) {
-                    input.remove(i);
-                    i--;
-                    continue;
-                }
-                String boardRow = input.get(i).trim();
-                splitRow = boardRow.split(" +");
-                for (int j = 0; j < splitRow.length; j++) {
-                    board[rowCounter][j] = Integer.parseInt(splitRow[j]);
-                }
-                rowCounter++;
-
-                if (rowCounter % boardDimension == 0) {
-                    allBoards.add(board);
-                    board = new int[5][5];
-                    rowCounter = 0;
-                }
+        ArrayList<int[][]> allBoards = new ArrayList<>();
+        int[][] board = new int[boardDimension][boardDimension];
+        int rowCounter = 0;
+        String[] splitRow;
+        for (int i = 0; i < input.size(); i++) {
+            if (input.get(i).equals("")) {
+                input.remove(i);
+                i--;
+                continue;
             }
+            String boardRow = input.get(i).trim();
+            splitRow = boardRow.split(" +");
+            for (int j = 0; j < splitRow.length; j++) {
+                board[rowCounter][j] = Integer.parseInt(splitRow[j]);
+            }
+            rowCounter++;
 
-            return allBoards;
+            if (rowCounter % boardDimension == 0) {
+                allBoards.add(board);
+                board = new int[5][5];
+                rowCounter = 0;
+            }
+        }
+
+        return allBoards;
 
     }
 
