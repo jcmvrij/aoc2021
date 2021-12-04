@@ -39,9 +39,23 @@ public class Bingo {
             }
         }
 
-//        for (int i = 0; i < allBingoBoards.size(); i++) {
-//            System.out.println(Arrays.deepToString(allBingoBoards.get(i)));
-//        }
+        //part2
+        for (int i = 0; i < bingoNumbers.length; i++) {
+            for (int j = 0; j < allBingoBoards.size(); j++) {
+                markBoard(allBingoBoards.get(j), bingoNumbers[i]);
+                winningBoard = evaluateBingoRow(allBingoBoards.get(j));
+                boardIndex = j;
+                lastBingoNumber = bingoNumbers[i];
+                if (winningBoard != null) {
+                    System.out.println(boardIndex);
+                    int score = calculateBoardScore(winningBoard);
+                    System.out.println(score + " * " + lastBingoNumber + " = " + score * lastBingoNumber);
+                    allBingoBoards.remove(boardIndex);
+                    j--;
+                }
+            }
+        }
+
     }
 
 
