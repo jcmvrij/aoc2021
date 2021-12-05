@@ -3,9 +3,8 @@ package day05;
 import day00InputHelper.ReadFile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class Main {
+public class DangerousAreaDetector {
     public static void main(String[] args) {
         String pathToTestInput = ".\\src\\day05\\testinput.txt";
         String pathToInput = ".\\src\\day05\\input.txt";
@@ -13,7 +12,7 @@ public class Main {
         ArrayList<String> input = ReadFile.read(pathToInput);
 
         int[][][] formattedInput = formatInput(input);
-        System.out.println(Arrays.deepToString(formattedInput));
+//        System.out.println(Arrays.deepToString(formattedInput));
 
         int diagramDimensions = 0;
         for (int i = 0; i < formattedInput.length; i++) {
@@ -25,43 +24,38 @@ public class Main {
                 }
             }
         }
-        System.out.println(diagramDimensions);
 
         int[][] diagram = new int[diagramDimensions + 1][diagramDimensions + 1];
-        printDiagram(diagram);
+//        printDiagram(diagram);
 
         for (int i = 0; i < formattedInput.length; i++) {
             fillDiagram(diagram, formattedInput[i]);
         }
-        printDiagram(diagram);
+//        printDiagram(diagram);
 
-        int counter = 0;
+        int dangerousAreas = 0;
         for (int i = 0; i < diagram.length; i++) {
             for (int j = 0; j < diagram[i].length; j++) {
                 if (diagram[i][j] >= 2) {
-                    counter++;
+                    dangerousAreas++;
                 }
             }
         }
-        System.out.println(counter);
+        System.out.println(dangerousAreas);
     }
 
     private static void fillDiagram(int[][] diagram, int[][] coordinate) {
-        System.out.println(Arrays.deepToString(coordinate));
         int[] delta = calculateDelta(coordinate);
-        System.out.println(Arrays.toString(delta));
+
         if (isHorizontalLine(delta)){
             drawHorizontal(diagram, coordinate, delta);
         } else if (isVerticalLine(delta)) {
             drawVertical(diagram, coordinate, delta);
         } else if (isDiagonalLine(delta)) {
-            System.out.println("DIAGONAL?");
             drawDiagonal(diagram, coordinate, delta);
-        }
-        else {
+        } else {
             System.out.println("invalid");
         }
-        System.out.println("-");
     }
 
     private static void drawDiagonal(int[][] diagram, int[][] input, int[] delta) {
@@ -70,26 +64,19 @@ public class Main {
         if (input[0][0] < input[1][0]) {
             beginCoordinate = input[0];
             endCoordinate = input[1];
-
         } else {
             beginCoordinate = input[1];
             endCoordinate = input[0];
         }
-
-        int step = 0;
+        int deltaY;
         if (beginCoordinate[1] < endCoordinate[1]) {
-            step = 1;
+            deltaY = 1;
         } else {
-            step = -1;
+            deltaY = -1;
         }
-        System.out.println("_");
-        System.out.println(Arrays.toString(beginCoordinate));
-        System.out.println(Arrays.toString(endCoordinate));
-        System.out.println("_");
 
         for (int i = 0; i <= delta[0]; i++) {
-            System.out.println("D: " + (beginCoordinate[0] + i) + " " + (beginCoordinate[1] + (i*step)));
-            diagram[(beginCoordinate[0] + i)][(beginCoordinate[1] + (i*step))] += 1;
+            diagram[(beginCoordinate[0] + i)][(beginCoordinate[1] + (i * deltaY))] += 1;
         }
     }
 
@@ -98,30 +85,18 @@ public class Main {
     }
 
     private static void drawVertical(int[][] diagram, int[][] input, int[] delta) {
-        int startY;
-        if (input[0][1] <= input[1][1]) {
-            startY = input[0][1];
-        } else {
-            startY = input[1][1];
-        }
-
-        int x = input[0][0];
+        int startX = input[0][0];
+        int startY = Math.min(input[0][1], input[1][1]);
         for (int i = 0; i <= delta[1]; i++) {
-            diagram[x][startY + i] += 1;
+            diagram[startX][startY + i] += 1;
         }
     }
 
     private static void drawHorizontal(int[][] diagram, int[][] input, int[] delta) {
-        int startX;
-        if (input[0][0] <= input[1][0]) {
-            startX = input[0][0];
-        } else {
-            startX = input[1][0];
-        }
-
-        int y = input[0][1];
+        int startX = Math.min(input[0][0], input[1][0]);
+        int startY = input[0][1];
         for (int i = 0; i <= delta[0]; i++) {
-            diagram[startX + i][y] += 1;
+            diagram[startX + i][startY] += 1;
         }
     }
 
@@ -134,23 +109,8 @@ public class Main {
     }
 
     private static int[] calculateDelta(int[][] coordinates) {
-        int x1 = coordinates[0][0];
-        int y1 = coordinates[0][1];
-        int x2 = coordinates[1][0];
-        int y2 = coordinates[1][1];
-        int d1;
-        int d2;
-        if (x1 <= x2) {
-            d1 = x2 - x1;
-        } else {
-            d1 = x1 - x2;
-        }
-        if (y1 <= y2) {
-            d2 = y2 - y1;
-        } else {
-            d2 = y1 - y2;
-        }
-
+        int d1 = Math.abs(coordinates[0][0] - coordinates[1][0]);
+        int d2 = Math.abs(coordinates[0][1] - coordinates[1][1]);
         return new int[]{d1, d2};
     }
 
@@ -176,6 +136,4 @@ public class Main {
         }
         return formattedInput;
     }
-
-
 }
