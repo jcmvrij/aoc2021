@@ -17,22 +17,21 @@ public class Bingo {
 
         int[] bingoNumbers = parseBingoNumbers(inputBingoNumbers);
         ArrayList<int[][]> allBingoBoards = createBoards(input, boardDimension);
-        int[][] winningBoard;
-        int boardIndex;
-        int lastBingoNumber;
 
-
-        for (int i = 0; i < bingoNumbers.length; i++) {
+        for (int bingoNumber : bingoNumbers) {
+            int[][] winningBoard;
+            int winningBoardIndex;
+            int lastBingoNumber;
             for (int j = 0; j < allBingoBoards.size(); j++) {
-                markBoard(allBingoBoards.get(j), bingoNumbers[i]);
+                markBoard(allBingoBoards.get(j), bingoNumber);
                 winningBoard = evaluateBingo(allBingoBoards.get(j));
-                boardIndex = j;
-                lastBingoNumber = bingoNumbers[i];
+                winningBoardIndex = j;
+                lastBingoNumber = bingoNumber;
                 if (winningBoard != null) {
-                    System.out.println(boardIndex);
+                    System.out.println(winningBoardIndex);
                     int score = calculateBoardScore(winningBoard);
                     System.out.println(score + " * " + lastBingoNumber + " = " + score * lastBingoNumber);
-                    allBingoBoards.remove(boardIndex);
+                    allBingoBoards.remove(winningBoardIndex);
                     j--;
                 }
             }
@@ -45,13 +44,12 @@ public class Bingo {
 
     private static int calculateBoardScore(int[][] winningBoard) {
         int score = 0;
-        for (int j = 0; j < winningBoard.length; j++) {
-            int[] row = winningBoard[j];
-            for (int k = 0; k < row.length; k++) {
-                if (row[k] == -1) {
+        for (int[] row : winningBoard) {
+            for (int i : row) {
+                if (i == -1) {
                     continue;
                 }
-                score += row[k];
+                score += i;
             }
         }
         return score;
@@ -60,7 +58,6 @@ public class Bingo {
     private static int[][] evaluateBingo(int[][] board) {
             int[] bingo = new int[]{-1, -1, -1, -1, -1};
             int[][] columnBoard = transformToColumnBoard(board);
-
             for (int i = 0; i < board.length; i++) {
                 if (Arrays.equals(board[i], bingo) || Arrays.equals(columnBoard[i], bingo)) {
                     System.out.println("BINGO!");
@@ -115,9 +112,7 @@ public class Bingo {
                 rowCounter = 0;
             }
         }
-
         return allBoards;
-
     }
 
     private static int[] parseBingoNumbers(String inputBingoNumbers) {
