@@ -10,7 +10,7 @@ public class Main {
         String pathToTestInput = ".\\src\\day05\\testinput.txt";
         String pathToInput = ".\\src\\day05\\input.txt";
 //        ArrayList<String> input = ReadFile.read(pathToTestInput);
-    ArrayList<String> input = ReadFile.read(pathToInput);
+        ArrayList<String> input = ReadFile.read(pathToInput);
 
         int[][][] formattedInput = formatInput(input);
         System.out.println(Arrays.deepToString(formattedInput));
@@ -47,16 +47,54 @@ public class Main {
     }
 
     private static void fillDiagram(int[][] diagram, int[][] coordinate) {
+        System.out.println(Arrays.deepToString(coordinate));
         int[] delta = calculateDelta(coordinate);
         System.out.println(Arrays.toString(delta));
         if (isHorizontalLine(delta)){
             drawHorizontal(diagram, coordinate, delta);
         } else if (isVerticalLine(delta)) {
             drawVertical(diagram, coordinate, delta);
-        } else {
+        } else if (isDiagonalLine(delta)) {
+            System.out.println("DIAGONAL?");
+            drawDiagonal(diagram, coordinate, delta);
+        }
+        else {
             System.out.println("invalid");
         }
         System.out.println("-");
+    }
+
+    private static void drawDiagonal(int[][] diagram, int[][] input, int[] delta) {
+        int[] beginCoordinate;
+        int[] endCoordinate;
+        if (input[0][0] < input[1][0]) {
+            beginCoordinate = input[0];
+            endCoordinate = input[1];
+
+        } else {
+            beginCoordinate = input[1];
+            endCoordinate = input[0];
+        }
+
+        int step = 0;
+        if (beginCoordinate[1] < endCoordinate[1]) {
+            step = 1;
+        } else {
+            step = -1;
+        }
+        System.out.println("_");
+        System.out.println(Arrays.toString(beginCoordinate));
+        System.out.println(Arrays.toString(endCoordinate));
+        System.out.println("_");
+
+        for (int i = 0; i <= delta[0]; i++) {
+            System.out.println("D: " + (beginCoordinate[0] + i) + " " + (beginCoordinate[1] + (i*step)));
+            diagram[(beginCoordinate[0] + i)][(beginCoordinate[1] + (i*step))] += 1;
+        }
+    }
+
+    private static boolean isDiagonalLine(int[] delta) {
+        return delta[0] == delta[1];
     }
 
     private static void drawVertical(int[][] diagram, int[][] input, int[] delta) {
@@ -68,11 +106,8 @@ public class Main {
         }
 
         int x = input[0][0];
-        System.out.println(startY);
-        System.out.println(x);
-
         for (int i = 0; i <= delta[1]; i++) {
-            diagram[startY + i][x] += 1;
+            diagram[x][startY + i] += 1;
         }
     }
 
@@ -86,9 +121,7 @@ public class Main {
 
         int y = input[0][1];
         for (int i = 0; i <= delta[0]; i++) {
-            System.out.println(i);
-            System.out.println("D: " + (startX+i) + " , " + y);
-            diagram[y][startX + i] += 1;
+            diagram[startX + i][y] += 1;
         }
     }
 
@@ -124,7 +157,7 @@ public class Main {
     private static void printDiagram(int[][] diagram) {
         for (int i = 0; i < diagram.length; i++) {
             for (int j = 0; j < diagram[i].length; j++) {
-                System.out.print(diagram[i][j] + "  ");
+                System.out.print(diagram[j][i] + "  ");
             }
             System.out.println();
         }
