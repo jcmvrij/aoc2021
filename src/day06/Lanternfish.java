@@ -3,7 +3,6 @@ package day06;
 import day00InputHelper.ReadFile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Lanternfish {
     public static void main(String[] args) {
@@ -18,19 +17,18 @@ public class Lanternfish {
             formattedInput.add(Integer.parseInt(splitInput[i]));
         }
 
-        System.out.println(formattedInput);
-        for (int j = 0; j < 80; j++) {
-            for (int i = 0; i < formattedInput.size(); i++) {
-                formattedInput.set(i, (formattedInput.get(i) - 1));
-            }
-
-            for (int i = 0; i < formattedInput.size(); i++) {
-                if (formattedInput.get(i) == -1) {
-                    formattedInput.set(i, 6);
-                    formattedInput.add(8);
+        for (int i = 0; i < 80; i++) {
+            int children = 0;
+            for (int j = 0; j < formattedInput.size(); j++) {
+                formattedInput.set(j, (formattedInput.get(j) - 1));
+                if (formattedInput.get(j) == -1) {
+                    formattedInput.set(j, 6);
+                    children++;
                 }
             }
-            System.out.println(formattedInput);
+            for (int j = 0; j < children; j++) {
+                formattedInput.add(8);
+            }
         }
         System.out.println(formattedInput.size());
     }
