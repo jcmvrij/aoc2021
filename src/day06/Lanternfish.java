@@ -5,6 +5,8 @@ import day00InputHelper.ReadFile;
 import java.util.ArrayList;
 
 public class Lanternfish {
+    public static long counter = 0;
+
     public static void main(String[] args) {
         String pathToTestInput = ".\\src\\day06\\testinput.txt";
         String pathToInput = ".\\src\\day06\\input.txt";
@@ -30,6 +32,36 @@ public class Lanternfish {
                 formattedInput.add(8);
             }
         }
-        System.out.println(formattedInput.size());
+        System.out.println("part1: " + formattedInput.size());
+
+
+        //part2
+        formattedInput = new ArrayList<>();
+        for (int i = 0; i < splitInput.length; i++) {
+            formattedInput.add(Integer.parseInt(splitInput[i]));
+        }
+
+        for (int i = 0; i < formattedInput.size(); i++) {
+            counter++;
+            countPopulation(formattedInput.get(i), 256);
+            System.out.print(i + " / ");
+            System.out.println(formattedInput.size());
+            System.out.println(counter);
+        }
+        System.out.println(counter);
+    }
+
+    public static void countPopulation(int lifeDays, int days) {
+        while (days > 0) {
+            lifeDays--;
+            days--;
+            if (lifeDays == -1) {
+                lifeDays = 6;
+                countPopulation(8, days);
+                counter++;
+            }
+        }
     }
 }
+
+
