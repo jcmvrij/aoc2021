@@ -34,7 +34,6 @@ public class Lanternfish {
         }
         System.out.println("part1: " + formattedInput.size());
 
-
         //part2
         formattedInput = new ArrayList<>();
         for (int i = 0; i < splitInput.length; i++) {
@@ -46,9 +45,8 @@ public class Lanternfish {
             countPopulation(formattedInput.get(i), 256);
             System.out.print(i + " / ");
             System.out.println(formattedInput.size());
-            System.out.println(counter);
         }
-        System.out.println(counter);
+        System.out.println("part2: " + counter);
     }
 
     public static void countPopulation(int lifeDays, int days) {
@@ -63,5 +61,3 @@ public class Lanternfish {
         }
     }
 }
-
-

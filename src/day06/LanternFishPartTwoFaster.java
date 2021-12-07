@@ -50,6 +50,6 @@ public class LanternFishPartTwoFaster {
         for (int l = 0; l < timers.size(); l++) {
             counter += timers.get(l);
         }
-        System.out.println("fish: " + counter);
+        System.out.println("day06 part 2\ntotal fish = " + counter);
     }
 }
